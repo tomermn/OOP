@@ -21,7 +21,12 @@ class ChatterBot {
 	String[] legalRequestsReplies;
 	String name;
 
+
+	/**
+	 * Constructor for ChatterBot class
+	* */
 	ChatterBot(String name, String[] repliesToIllegalRequest, String[] legalRequestsReplies) {
+
 		this.name = name;
 
 		this.repliesToIllegalRequest = new String[repliesToIllegalRequest.length];
@@ -35,7 +40,7 @@ class ChatterBot {
 		}
 	}
 
-	String replyTo(String statement) {
+	public String replyTo(String statement) {
 		if(statement.startsWith(REQUEST_PREFIX)) {
 			return replyToLegalRequest(statement.replaceFirst(REQUEST_PREFIX, ""));
 		}

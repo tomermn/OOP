@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+/**
+ * The Chat class represent a simple conversational program between two ChatterBot instances.
+ * It initializes bots, provides initial statements, and facilitates an ongoing conversation loop.
+ */
 public class Chat {
 
     static final String FIRST_STATEMENT = "Hello Java";
@@ -8,20 +12,38 @@ public class Chat {
 
 
     public static void main(String[] args) {
-        ChatterBot[] chatterBots = new ChatterBot[2];
+
+        // Illegals patterns
         String placeHolderForIllegal = ChatterBot.PLACEHOLDER_FOR_ILLEGAL_REQUEST;
-        String[] bot1IllegalReplies = {"what", "say I should say", "what the hell is " + placeHolderForIllegal + "?!",
+        String[] illegalReplies1 = {"what", "say I should say", "what the hell is " + placeHolderForIllegal + "?!",
         placeHolderForIllegal + "? " + placeHolderForIllegal + "?! " + placeHolderForIllegal + "???!"};
-        String[] bot2IllegalReplies = {"whaaat", "say say", placeHolderForIllegal + " is funny"};
+        String[] illegalReplies2 = {"whaaat", "say say", placeHolderForIllegal + " is funny"};
+
+        // Legals patterns
         String placeHolderForLegal = ChatterBot.PLACEHOLDER_FOR_REQUESTED_PHRASE;
-        String[] bot1LegalReplies = {"You want me to say " + placeHolderForLegal + ", do you? alright: " + placeHolderForLegal};
-        String[] bot2LegalReplies = {"say " + placeHolderForLegal + "? okay: " + placeHolderForLegal};
-        chatterBots[0] = new ChatterBot(BOT_1_NAME, bot1IllegalReplies, bot1LegalReplies);
-        chatterBots[1] = new ChatterBot(BOT_2_NAME, bot2IllegalReplies, bot2LegalReplies);
+        String[] legalReplies1 = {"You want me to say " + placeHolderForLegal + ", do you? alright: " + placeHolderForLegal};
+        String[] legalReplies2 = {"say " + placeHolderForLegal + "? okay: " + placeHolderForLegal};
 
-        String statement = FIRST_STATEMENT;
+
+        // ChatterBots Construction
+        ChatterBot[] chatterBots = new ChatterBot[2];
+        chatterBots[0] = new ChatterBot(BOT_1_NAME, illegalReplies1, legalReplies1);
+        chatterBots[1] = new ChatterBot(BOT_2_NAME, illegalReplies2, legalReplies2);
+        Chat chatInstance = new Chat();
+        chatInstance.startConversation(FIRST_STATEMENT, chatterBots);
+
+
+    }
+
+    /**
+     * Initiates and manages the conversation loop between ChatterBots.
+     *
+     * @param seedStatement The initial statement to kick-start the conversation.
+     * @param chatterBots   An array of ChatterBot instances participating in the conversation.
+     */
+    void startConversation(String seedStatement, ChatterBot[] chatterBots){
+        String statement = seedStatement;
         Scanner scanner = new Scanner(System.in);
-
         while (true){
             for (ChatterBot bot : chatterBots){
                 statement = bot.replyTo(statement);
