@@ -11,55 +11,61 @@ import java.util.*;
  * @author Dan Nirel
  */
 class ChatterBot {
+
+//	Const fields
 	static final String REQUEST_PREFIX = "say ";
 	static final String PLACEHOLDER_FOR_REQUESTED_PHRASE = "<phrase>";
-
+	static final String PLACEHOLDER_FOR_ILLEGAL_REQUEST = "<request>";
 	Random rand = new Random();
 	String[] repliesToIllegalRequest;
 	String[] legalRequestsReplies;
-
 	String name;
 
-	ChatterBot(String name, String[] repliesToIllegalRequest, String[] legalRequestsReplies ) {
+	ChatterBot(String name, String[] repliesToIllegalRequest, String[] legalRequestsReplies) {
 		this.name = name;
+
 		this.repliesToIllegalRequest = new String[repliesToIllegalRequest.length];
-		for(int i = 0 ; i < repliesToIllegalRequest.length ; i = i+1) {
+		for (int i = 0 ; i < repliesToIllegalRequest.length ; i++) {
 			this.repliesToIllegalRequest[i] = repliesToIllegalRequest[i];
 		}
 
 		this.legalRequestsReplies = new String[legalRequestsReplies.length];
-		for(int i = 0 ; i < legalRequestsReplies.length ; i = i+1) {
+		for (int i = 0 ; i < legalRequestsReplies.length ; i++) {
 			this.legalRequestsReplies[i] = legalRequestsReplies[i];
 		}
 	}
 
 	String replyTo(String statement) {
 		if(statement.startsWith(REQUEST_PREFIX)) {
-
-			return replyToLegalRequest(statement);
+			return replyToLegalRequest(statement.replaceFirst(REQUEST_PREFIX, ""));
 		}
 		return replyToIllegalRequest(statement);
 	}
 
-	String replyToLegalRequest(String statement) {
-		String phrase = statement;
-		int randomIndex = rand.nextInt(this.legalRequestsReplies.length);
-		String responsePattern = this.legalRequestsReplies[randomIndex];
-		String reply = responsePattern.replaceAll(PLACEHOLDER_FOR_REQUESTED_PHRASE, phrase);
+	public String replyToLegalRequest(String statement) {
+		String reply = replacePlaceholderInARandomPattern(this.legalRequestsReplies,
+				this.PLACEHOLDER_FOR_REQUESTED_PHRASE, statement);
+
 		return reply;
-	}
+		}
 
 
 	String replyToIllegalRequest(String statement) {
-		int randomIndex = rand.nextInt(repliesToIllegalRequest.length);
-		String reply = repliesToIllegalRequest[randomIndex];
-		if(rand.nextBoolean()) {
-			reply = reply + statement;
-		}
+		String reply = replacePlaceholderInARandomPattern(this.repliesToIllegalRequest,
+				this.PLACEHOLDER_FOR_ILLEGAL_REQUEST, statement);
+
 		return reply;
 	}
 
-	String getName(){
+	public String replacePlaceholderInARandomPattern(String[] patterns, String placeholder, String replacement){
+		int randomIndex = rand.nextInt(patterns.length);
+		String responsePattern = patterns[randomIndex];
+		return responsePattern.replaceAll(placeholder, replacement);
+	}
+
+
+
+	public String getName() {
 		return this.name;
 	}
 }
