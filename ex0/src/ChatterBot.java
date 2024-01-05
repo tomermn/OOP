@@ -12,19 +12,21 @@ import java.util.*;
  */
 class ChatterBot {
 
-//	Const fields
 	static final String REQUEST_PREFIX = "say ";
 	static final String PLACEHOLDER_FOR_REQUESTED_PHRASE = "<phrase>";
 	static final String PLACEHOLDER_FOR_ILLEGAL_REQUEST = "<request>";
-	Random rand = new Random();
-	String[] repliesToIllegalRequest;
-	String[] legalRequestsReplies;
-	String name;
+	private Random rand = new Random();
+	private String[] repliesToIllegalRequest;
+	private String[] legalRequestsReplies;
+	private String name;
 
 
 	/**
-	 * Constructor for ChatterBot class
-	* */
+	 * Constructor for ChatterBot class.
+	 * @param name                    The name of the ChatterBot.
+	 * @param repliesToIllegalRequest An array of possible replies for illegal requests.
+	 * @param legalRequestsReplies    An array of possible replies for legal requests.
+	 */
 	ChatterBot(String name, String[] repliesToIllegalRequest, String[] legalRequestsReplies) {
 
 		this.name = name;
@@ -40,36 +42,72 @@ class ChatterBot {
 		}
 	}
 
+	/**
+	 * Generates ChatterBot's reply based on the provided statement.
+	 *
+	 * If the statement starts with the constant REQUEST_PREFIX, it generates a legal request reply.
+	 * Otherwise, it generates a reply for an illegal request.
+	 *
+	 * @param statement The input statement for which the ChatterBot generates a reply.
+	 * @return The generated reply.
+	 */
 	public String replyTo(String statement) {
 		if(statement.startsWith(REQUEST_PREFIX)) {
-			return replyToLegalRequest(statement.replaceFirst(REQUEST_PREFIX, ""));
+			return replyToLegalRequest(statement);
 		}
+
 		return replyToIllegalRequest(statement);
 	}
 
+	/**
+	 * Generates a reply for a legal request.
+	 *
+	 * @param statement The request statement.
+	 * @return The generated reply.
+	 */
 	public String replyToLegalRequest(String statement) {
 		String reply = replacePlaceholderInARandomPattern(this.legalRequestsReplies,
-				this.PLACEHOLDER_FOR_REQUESTED_PHRASE, statement);
-
-		return reply;
-		}
-
-
-	String replyToIllegalRequest(String statement) {
-		String reply = replacePlaceholderInARandomPattern(this.repliesToIllegalRequest,
-				this.PLACEHOLDER_FOR_ILLEGAL_REQUEST, statement);
+				ChatterBot.PLACEHOLDER_FOR_REQUESTED_PHRASE, statement.replaceFirst(REQUEST_PREFIX, ""));
 
 		return reply;
 	}
 
-	public String replacePlaceholderInARandomPattern(String[] patterns, String placeholder, String replacement){
+
+	/**
+	 * Generates a reply for an illegal request.
+	 *
+	 * @param statement The request statement.
+	 * @return The generated reply.
+	 */
+	public String replyToIllegalRequest(String statement) {
+
+		String reply = replacePlaceholderInARandomPattern(this.repliesToIllegalRequest,
+				ChatterBot.PLACEHOLDER_FOR_ILLEGAL_REQUEST, statement);
+
+		return reply;
+	}
+
+	/**
+	 * Replaces a placeholder in a random pattern with the provided replacement.
+	 *
+	 * @param patterns    An array of possible patterns.
+	 * @param placeholder The placeholder to be replaced in the pattern.
+	 * @param replacement The replacement for the placeholder.
+	 * @return The pattern with the placeholder replaced by the provided replacement.
+	 */
+	public String replacePlaceholderInARandomPattern(String[] patterns, String placeholder,
+													 String replacement) {
+
 		int randomIndex = rand.nextInt(patterns.length);
 		String responsePattern = patterns[randomIndex];
 		return responsePattern.replaceAll(placeholder, replacement);
 	}
 
-
-
+	/**
+	 * Retrieves the name of the ChatterBot.
+	 *
+	 * @return The name of the ChatterBot.
+	 */
 	public String getName() {
 		return this.name;
 	}
