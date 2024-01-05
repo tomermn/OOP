@@ -11,7 +11,6 @@ public class Chat {
     static final String BOT_2_NAME = "Patrick";
     static final int BOT_COUNT = 2;
 
-
     /**
      * Main method that initializes ChatterBots and run the conversation between them.
      *
@@ -40,7 +39,6 @@ public class Chat {
         String[] legalReplies2 = {
             "say " + placeHolderForLegal + "? okay: " + placeHolderForLegal, placeHolderForLegal,
             "at your service hon! " + placeHolderForLegal};
-
 
         /* ChatterBots Construction */
         ChatterBot[] chatterBots = new ChatterBot[BOT_COUNT];

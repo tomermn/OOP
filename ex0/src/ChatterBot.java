@@ -20,7 +20,6 @@ class ChatterBot {
 	private String[] legalRequestsReplies;
 	private String name;
 
-
 	/**
 	 * Constructor for ChatterBot class.
 	 * @param name                    The name of the ChatterBot.
@@ -28,15 +27,13 @@ class ChatterBot {
 	 * @param legalRequestsReplies    An array of possible replies for legal requests.
 	 */
 	ChatterBot(String name, String[] repliesToIllegalRequest, String[] legalRequestsReplies) {
-
 		this.name = name;
-
 		this.repliesToIllegalRequest = new String[repliesToIllegalRequest.length];
+		this.legalRequestsReplies = new String[legalRequestsReplies.length];
+
 		for (int i = 0 ; i < repliesToIllegalRequest.length ; i++) {
 			this.repliesToIllegalRequest[i] = repliesToIllegalRequest[i];
 		}
-
-		this.legalRequestsReplies = new String[legalRequestsReplies.length];
 		for (int i = 0 ; i < legalRequestsReplies.length ; i++) {
 			this.legalRequestsReplies[i] = legalRequestsReplies[i];
 		}
@@ -44,10 +41,10 @@ class ChatterBot {
 
 	/**
 	 * Generates ChatterBot's reply based on the provided statement.
-	 *
+	 * <p>
 	 * If the statement starts with the constant REQUEST_PREFIX, it generates a legal request reply.
 	 * Otherwise, it generates a reply for an illegal request.
-	 *
+	 *</p>
 	 * @param statement The input statement for which the ChatterBot generates a reply.
 	 * @return The generated reply.
 	 */
@@ -72,7 +69,6 @@ class ChatterBot {
 		return reply;
 	}
 
-
 	/**
 	 * Generates a reply for an illegal request.
 	 *
@@ -80,7 +76,6 @@ class ChatterBot {
 	 * @return The generated reply.
 	 */
 	public String replyToIllegalRequest(String statement) {
-
 		String reply = replacePlaceholderInARandomPattern(this.repliesToIllegalRequest,
 				ChatterBot.PLACEHOLDER_FOR_ILLEGAL_REQUEST, statement);
 
