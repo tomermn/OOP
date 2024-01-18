@@ -9,6 +9,8 @@ public class Constants {
     public final static String OCCUPIED_COORDINATE = "Mark position is already occupied.\n" +
             "Invalid coordinates, type again: ";
 
+
+
     /**
      * Use this method to generate the text that HumanPlayer should send
      *
