@@ -4,7 +4,9 @@
  * the Player interface and allows a human player to make moves on the TicTacToe game board.
  */
 public class HumanPlayer implements Player {
-    private String playerMark = "X";
+
+
+
 
 
     /**
@@ -15,6 +17,7 @@ public class HumanPlayer implements Player {
      */
     @Override
     public void playTurn(Board board, Mark mark) {
+        String playerMark = (mark == Mark.X) ? Constants.MARK_X : Constants.MARK_O;
         System.out.println(Constants.playerRequestInputString(playerMark));
         handleUserInput(board, mark);
     }

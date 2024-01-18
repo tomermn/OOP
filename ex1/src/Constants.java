@@ -9,6 +9,15 @@ public class Constants {
     public final static String OCCUPIED_COORDINATE = "Mark position is already occupied.\n" +
             "Invalid coordinates, type again: ";
 
+    public final static int DEFAULT_WIN_STREAK = 3;
+    public final static int DEFAULT_BOARD_SIZE = 4;
+    public final static String MARK_X = "X";
+    public final static String MARK_O = "O";
+    public final static String ROW = "ROW";
+    public final static String COL = "COL";
+
+
+
 
 
     /**

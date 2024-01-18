@@ -5,7 +5,7 @@
  */
 public class Board {
 
-    private int boardSize = 4; // TODO - make it constant.
+    private int boardSize = Constants.DEFAULT_BOARD_SIZE;
     private Mark[][] board;
 
     /**
