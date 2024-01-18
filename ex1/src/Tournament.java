@@ -26,8 +26,5 @@ public class Tournament {
 
         tournament.playTournament(4, 3, "hh", "hh");
 
-
-
-
     }
 }
