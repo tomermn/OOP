@@ -15,7 +15,8 @@ public class Constants {
     public final static String MARK_O = "O";
     public final static String ROW = "ROW";
     public final static String COL = "COL";
-
+    public final static String DIAGONAL_LEFT = "DIAGONAL_LEFT";
+    public final static String DIAGONAL_RIGHT = "DIAGONAL_RIGHT";
 
 
 

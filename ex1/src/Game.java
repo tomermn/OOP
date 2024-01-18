@@ -7,6 +7,7 @@ public class Game {
     private boolean isGameOver = false;
     private Player currentPlayer;
     private Mark currentMark;
+    private int turnsNumber = 0;
 
 
     public Game(Player playerX, Player playerO, Renderer renderer) {
@@ -36,24 +37,32 @@ public class Game {
     }
 
     public Mark run() {
-        Mark result = Mark.BLANK;
         currentPlayer = playerX;
         currentMark = Mark.X;
+        return handleGame();
+    }
+
+    private Mark handleGame() {
+        Mark gameResult = Mark.BLANK;
+        int cellsNumber = board.getSize() * board.getSize();
         while (!isGameOver) {
             playerTurn();
             if (checkCurrentPlayerWin()){
-                result = currentMark;
+                gameResult = currentMark;
+                isGameOver = true;
+            } else if (cellsNumber == turnsNumber) {
                 isGameOver = true;
             }
             else{
                 setupNextTurn();
             }
         }
-        return result;
+        return gameResult;
     }
 
     private void playerTurn() {
         currentPlayer.playTurn(board, currentMark);
+        turnsNumber++;
         renderer.renderBoard(board);
     }
 
@@ -63,31 +72,44 @@ public class Game {
     }
 
     private boolean checkCurrentPlayerWin() {
-        if (checkRowStreak()) {
-            return true;
-        }
-        return checkColStreak();
+        return (checkRowStreak() || checkColStreak() || checkLeftDiagonalStreak() || checkRightDiagonalStreak());
     }
 
     private boolean checkRowStreak() {
-        return checkLineStreak(Constants.ROW);
+        return checkStraightStreak(Constants.ROW);
     }
 
     private boolean checkColStreak() {
-        return checkLineStreak(Constants.COL);
+        return checkStraightStreak(Constants.COL);
     }
 
-    private int checkMark(int i, int j) {
-        if (board.getMark(i, j) == currentMark) {
-            return 1;
-        }
-        return -1;
+    private boolean checkLeftDiagonalStreak() {
+        return checkDiagonalStreak(Constants.DIAGONAL_LEFT);
     }
 
-    private boolean checkLineStreak(String streakType) {
+    private boolean checkRightDiagonalStreak() {
+        return checkDiagonalStreak(Constants.DIAGONAL_RIGHT);
+    }
+
+
+
+    private boolean checkStraightStreak(String streakType) {
         for (int i = 0; i < board.getSize(); i++) {
             int countCorrectMarks = 0;
             for (int j = 0; j < board.getSize(); j++) {
+                countCorrectMarks += calculateStreak(streakType, i, j);
+                if (countCorrectMarks == winStreak) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDiagonalStreak(String streakType) {
+        for (int i = 0; i < board.getSize(); i++) {
+            int countCorrectMarks = 0;
+            for (int j = 0; j < i; j++) {
                 countCorrectMarks += calculateStreak(streakType, i, j);
                 if (countCorrectMarks == winStreak) {
                     return true;
@@ -105,12 +127,23 @@ public class Game {
             case Constants.COL:
                 return checkMark(j, i);
 
+            case Constants.DIAGONAL_LEFT:
+                return checkMark(i - j, j);
+
+            case Constants.DIAGONAL_RIGHT:
+                return checkMark(board.getSize() - i - 1 + j, j);
+
             default:
                 break;
         }
         return 0;
     }
 
-
+    private int checkMark(int i, int j) {
+        if (board.getMark(i, j) == currentMark) {
+            return 1;
+        }
+        return -1;
+    }
 
 }
