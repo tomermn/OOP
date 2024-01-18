@@ -4,17 +4,22 @@ import java.util.*;
  * Base file for the ChatterBot exercise.
  * The bot's replyTo method receives a statement.
  * If it starts with the constant REQUEST_PREFIX, the bot returns
- * whatever is after this prefix. Otherwise, it returns one of
- * a few possible replies as supplied to it via its constructor.
- * In this case, it may also include the statement after
- * the selected reply (coin toss).
- * @author Dan Nirel
+ * one of a several possible replies for legal statements. Otherwise, it returns one of
+ * a several possible replies for illegal statements.
+ * The possible replies supplied to the bot via its constructor.
+ * In both cases the reply pattern may include placeholders:
+ * PLACEHOLDER_FOR_REQUESTED_PHRASE for legal patterns, PLACEHOLDER_FOR_ILLEGAL_REQUEST for illegal ones.
+ * The bot will replace these placeholders in the replacePlaceholderInARandomPattern method
+ * with the statement depending on its legality.
+ * @author Dan Nirel, Tomer Meidan
  */
 class ChatterBot {
 
-	static final String REQUEST_PREFIX = "say ";
-	static final String PLACEHOLDER_FOR_REQUESTED_PHRASE = "<phrase>";
-	static final String PLACEHOLDER_FOR_ILLEGAL_REQUEST = "<request>";
+	public static final String REQUEST_PREFIX = "say ";
+	public static final String PLACEHOLDER_FOR_REQUESTED_PHRASE = "<phrase>";
+	public static final String PLACEHOLDER_FOR_ILLEGAL_REQUEST = "<request>";
+
+	/* Private fields */
 	private Random rand = new Random();
 	private String[] repliesToIllegalRequest;
 	private String[] legalRequestsReplies;
@@ -41,15 +46,13 @@ class ChatterBot {
 
 	/**
 	 * Generates ChatterBot's reply based on the provided statement.
-	 * <p>
 	 * If the statement starts with the constant REQUEST_PREFIX, it generates a legal request reply.
 	 * Otherwise, it generates a reply for an illegal request.
-	 *</p>
 	 * @param statement The input statement for which the ChatterBot generates a reply.
 	 * @return The generated reply.
 	 */
 	public String replyTo(String statement) {
-		if(statement.startsWith(REQUEST_PREFIX)) {
+		if(statement.startsWith(REQUEST_PREFIX)) { // The condition for the legality of the statement
 			return replyToLegalRequest(statement);
 		}
 

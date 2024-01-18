@@ -1,15 +1,21 @@
 import java.util.Scanner;
 
 /**
- * The Chat class represent a simple conversational program between two ChatterBot instances.
+ * The Chat class represent a simple conversational program between ChatterBot instances.
  * It initializes bots, provides initial statements, and facilitates an ongoing conversation loop.
+ * This class supports conversation with any number of bots. To add a bot to the conversation,
+ * it is necessary to construct it using the ChatterBot constructor and add manually to the
+ * chatterBots array.
+ * @author Tomer Meidan
+ * @see ChatterBot
  */
 public class Chat {
 
-    static final String FIRST_STATEMENT = "say what";
-    static final String BOT_1_NAME = "Spongebob";
-    static final String BOT_2_NAME = "Patrick";
-    static final int BOT_COUNT = 2;
+    private static final String FIRST_STATEMENT = "say what";
+    private static final String BOT_1_NAME = "Spongebob";
+    private static final String BOT_2_NAME = "Patrick";
+    private static final int BOT_COUNT = 2; // Currently set at 2, the class supports any integer number.
+
 
     /**
      * Main method that initializes ChatterBots and run the conversation between them.
@@ -18,7 +24,7 @@ public class Chat {
      */
     public static void main(String[] args) {
 
-        /* Illegals patterns */
+        /* Initial illegals patterns, we will use them in the bots initialization */
         String placeHolderForIllegal = ChatterBot.PLACEHOLDER_FOR_ILLEGAL_REQUEST;
         String[] illegalReplies1 = {
             "what", "say I should say",
@@ -31,7 +37,7 @@ public class Chat {
             "i dont know any of " + placeHolderForIllegal,
             "say " + placeHolderForIllegal + "?", "say something else", "bye"};
 
-        /* Legals patterns */
+        /* Initial legals patterns, we will use them in the bots initialization */
         String placeHolderForLegal = ChatterBot.PLACEHOLDER_FOR_REQUESTED_PHRASE;
         String[] legalReplies1 = {
             "You want me to say " + placeHolderForLegal + ", do you? alright: " + placeHolderForLegal,
@@ -45,7 +51,7 @@ public class Chat {
         chatterBots[0] = new ChatterBot(BOT_1_NAME, illegalReplies1, legalReplies1);
         chatterBots[1] = new ChatterBot(BOT_2_NAME, illegalReplies2, legalReplies2);
         Chat chatInstance = new Chat();
-        chatInstance.startConversation(FIRST_STATEMENT, chatterBots);
+        chatInstance.runConversation(FIRST_STATEMENT, chatterBots);
     }
 
     /*
@@ -56,11 +62,11 @@ public class Chat {
      * of the previous bot and generates an output for the next bot.
      * After completing the conversation cycle with all bots in the array,
      * it restarts the iteration from the first bot.
-     * @param seedStatement The initial statement to kick-start the conversation.
+     * @param firstStatement The initial statement to kick-start the conversation.
      * @param chatterBots   An array of ChatterBot instances participating in the conversation.
      */
-    private void startConversation(String seedStatement, ChatterBot[] chatterBots) {
-        String statement = seedStatement;
+    private void runConversation(String firstStatement, ChatterBot[] chatterBots) {
+        String statement = firstStatement;
         Scanner scanner = new Scanner(System.in);
         while (true){
             for (ChatterBot bot : chatterBots){
