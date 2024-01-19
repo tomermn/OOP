@@ -10,6 +10,12 @@ public class PlayerFactory {
             case Constants.RANDOM_PLAYER_NAME:
                 return new WhateverPlayer();
 
+            case Constants.CLEVER_PLAYER_NAME:
+                return new CleverPlayer();
+
+            case Constants.GENIUS_PLAYER_NAME:
+                return new GeniusPlayer();
+
             default:
                 return null;
 

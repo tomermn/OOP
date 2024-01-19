@@ -1,3 +1,5 @@
+import java.util.Locale;
+
 /**
  * Represents a Tic Tac Toe tournament between two players.
  * Manages multiple rounds and keeps track of points.
@@ -157,9 +159,9 @@ public class Tournament {
         int roundCount = Integer.parseInt(args[Constants.ROUNDS_ARG]);
         int size = Integer.parseInt(args[Constants.SIZE_ARG]);
         int winStreak = Integer.parseInt(args[Constants.WIN_STREAK_ARG]);
-        String rendererName = args[Constants.RENDERER_ARG];
-        String player1Name = args[Constants.PLAYER1_ARG];
-        String player2Name = args[Constants.PLAYER2_ARG];
+        String rendererName = args[Constants.RENDERER_ARG].toLowerCase(Locale.ROOT);
+        String player1Name = args[Constants.PLAYER1_ARG].toLowerCase();
+        String player2Name = args[Constants.PLAYER2_ARG].toLowerCase();
 
         PlayerFactory playerFactory = new PlayerFactory();
         RendererFactory rendererFactory = new RendererFactory();
@@ -167,9 +169,9 @@ public class Tournament {
         Player player2 = playerFactory.createPlayer(player2Name);
         Renderer renderer = rendererFactory.createRenderer(rendererName, size);
 
-        Tournament tournament = new Tournament(roundCount, renderer, player1, player2);
-        tournament.playTournament(size, winStreak, player1Name, player2Name);
-
+        if (player1 != null && player2 != null && renderer != null) {
+            Tournament tournament = new Tournament(roundCount, renderer, player1, player2);
+            tournament.playTournament(size, winStreak, player1Name, player2Name);
+        }
     }
-
 }
