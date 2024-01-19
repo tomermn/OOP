@@ -1,3 +1,7 @@
+/**
+ * The `Game` class represents a Tic-Tac-Toe game between two players on a square game board.
+ * It manages player turns, tracks game state, and checks for win conditions.
+ */
 public class Game {
     private Player playerX;
     private Player playerO;
@@ -7,9 +11,16 @@ public class Game {
     private boolean isGameOver = false;
     private Player currentPlayer;
     private Mark currentMark;
-    private int turnsNumber = 0;
+    private int turnCounter = 0;
 
 
+    /**
+     * Constructs a new game with the given players and renderer.
+     *
+     * @param playerX   the first player (Mark X)
+     * @param playerO   the second player (Mark O)
+     * @param renderer  the renderer to display the game board
+     */
     public Game(Player playerX, Player playerO, Renderer renderer) {
         this.playerX = playerX;
         this.playerO = playerO;
@@ -17,6 +28,15 @@ public class Game {
         this.board = new Board();
     }
 
+    /**
+     * Constructs a new game with the given players, renderer, and board size.
+     *
+     * @param playerX   the first player (Mark X)
+     * @param playerO   the second player (Mark O)
+     * @param size      the size of the square game board
+     * @param winStreak the number of consecutive marks required to win
+     * @param renderer  the renderer to display the game board
+     */
     public Game(Player playerX, Player playerO, int size, int winStreak,Renderer renderer) {
         this(playerX, playerO, renderer);
         board = new Board(size);
@@ -28,14 +48,28 @@ public class Game {
         }
     }
 
+    /**
+     * Gets the required win streak for winning the game.
+     *
+     * @return the win streak
+     */
     public int getWinStreak() {
         return winStreak;
     }
 
+    /**
+     * Gets the size of the game board.
+     *
+     * @return the size of the game board
+     */
     public int getBoardSize() {
         return board.getSize();
     }
-
+    /**
+     * Initiates and runs the game, returning the Mark of the victory streak of the game.
+     *
+     * @return Mark of the victory streak
+     */
     public Mark run() {
         currentPlayer = playerX;
         currentMark = Mark.X;
@@ -44,25 +78,26 @@ public class Game {
 
     private Mark handleGame() {
         Mark gameResult = Mark.BLANK;
-        int cellsNumber = board.getSize() * board.getSize();
+        int boardSize = board.getSize();
+        int cellsNumber = boardSize * boardSize;
         while (!isGameOver) {
-            playerTurn();
-            if (checkCurrentPlayerWin()){
+            currentPlayerTurn();
+            if (checkWinConditions()){
                 gameResult = currentMark;
                 isGameOver = true;
-            } else if (cellsNumber == turnsNumber) {
+            } else if (cellsNumber == turnCounter) {
                 isGameOver = true;
             }
-            else{
+            else {
                 setupNextTurn();
             }
         }
         return gameResult;
     }
 
-    private void playerTurn() {
+    private void currentPlayerTurn() {
         currentPlayer.playTurn(board, currentMark);
-        turnsNumber++;
+        turnCounter++;
         renderer.renderBoard(board);
     }
 
@@ -71,8 +106,8 @@ public class Game {
         currentMark = (currentMark == Mark.X) ? Mark.O : Mark.X;
     }
 
-    private boolean checkCurrentPlayerWin() {
-        return (checkRowStreak() || checkColStreak() || checkLeftDiagonalStreak() || checkRightDiagonalStreak());
+    private boolean checkWinConditions() {
+        return (checkRowStreak() || checkColStreak() || checkDiagonalLeftStreak() || checkDiagonalRightStreak());
     }
 
     private boolean checkRowStreak() {
@@ -83,22 +118,24 @@ public class Game {
         return checkStraightStreak(Constants.COL);
     }
 
-    private boolean checkLeftDiagonalStreak() {
+    private boolean checkDiagonalLeftStreak() {
         return checkDiagonalStreak(Constants.DIAGONAL_LEFT);
     }
 
-    private boolean checkRightDiagonalStreak() {
+    private boolean checkDiagonalRightStreak() {
         return checkDiagonalStreak(Constants.DIAGONAL_RIGHT);
     }
 
-
-
     private boolean checkStraightStreak(String streakType) {
         for (int i = 0; i < board.getSize(); i++) {
-            int countCorrectMarks = 0;
+            int currentSequenceLength = 0;
             for (int j = 0; j < board.getSize(); j++) {
-                countCorrectMarks += calculateStreak(streakType, i, j);
-                if (countCorrectMarks == winStreak) {
+                if (checkStreakByType(streakType, i, j)) {
+                    currentSequenceLength++;
+                }else {
+                    currentSequenceLength = 0;
+                }
+                if (currentSequenceLength == winStreak) {
                     return true;
                 }
             }
@@ -108,10 +145,15 @@ public class Game {
 
     private boolean checkDiagonalStreak(String streakType) {
         for (int i = 0; i < board.getSize(); i++) {
-            int countCorrectMarks = 0;
-            for (int j = 0; j < i; j++) {
-                countCorrectMarks += calculateStreak(streakType, i, j);
-                if (countCorrectMarks == winStreak) {
+            int currentSequenceLength = 0;
+            for (int j = 0; j <= i; j++) {
+                if (checkStreakByType(streakType, i, j)) {
+                    currentSequenceLength++;
+                }
+                else{
+                    currentSequenceLength = 0;
+                }
+                if (currentSequenceLength == winStreak) {
                     return true;
                 }
             }
@@ -119,7 +161,7 @@ public class Game {
         return false;
     }
 
-    private int calculateStreak(String streakType, int i, int j) {
+    private boolean checkStreakByType(String streakType, int i, int j) {
         switch (streakType) {
             case Constants.ROW:
                 return checkMark(i, j);
@@ -136,14 +178,11 @@ public class Game {
             default:
                 break;
         }
-        return 0;
+        return false;
     }
 
-    private int checkMark(int i, int j) {
-        if (board.getMark(i, j) == currentMark) {
-            return 1;
-        }
-        return -1;
+    private boolean checkMark(int i, int j) {
+        return (board.getMark(i, j) == currentMark);
     }
 
 }

@@ -17,6 +17,20 @@ public class Constants {
     public final static String COL = "COL";
     public final static String DIAGONAL_LEFT = "DIAGONAL_LEFT";
     public final static String DIAGONAL_RIGHT = "DIAGONAL_RIGHT";
+    public final static String HUMAN_PLAYER_NAME = "human";
+    public final static String RANDOM_PLAYER_NAME = "whatever";
+    public final static String CLEVER_PLAYER_NAME = "clever";
+    public final static String GENIUS_PLAYER_NAME = "genius";
+    public final static String CONSOLE_RENDERER_NAME = "console";
+    public final static String VOID_RENDERER_NAME = "none";
+    public final static int ROUNDS_ARG = 0;
+    public final static int SIZE_ARG = 1;
+    public final static int WIN_STREAK_ARG = 2;
+    public final static int RENDERER_ARG = 3;
+    public final static int PLAYER1_ARG = 4;
+    public final static int PLAYER2_ARG = 5;
+
+
 
 
 

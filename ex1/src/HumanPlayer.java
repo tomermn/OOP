@@ -6,9 +6,6 @@
 public class HumanPlayer implements Player {
 
 
-
-
-
     /**
      * Plays a turn for the human player on the provided game board.
      *
@@ -24,14 +21,11 @@ public class HumanPlayer implements Player {
 
     private void handleUserInput(Board board, Mark mark) {
         int userInput, row, col;
-        while (true) {
+        do {
             userInput = KeyboardInput.readInt();
             row = (userInput / 10) % 10;
             col = userInput % 10;
-            if (hasPutMark(row, col, board, mark)) {
-                break;
-            }
-        }
+        } while (!hasPutMark(row, col, board, mark));
     }
 
     private boolean hasPutMark(int row, int col, Board board, Mark mark) {
