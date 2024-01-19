@@ -8,6 +8,8 @@
  */
 public class CleverPlayer implements Player {
 
+    public CleverPlayer() {}
+
     /**
      * Overrides the playTurn method from the Player interface to make a systematic move.
      * The player iterates through each cell on the board, attempting to place its mark

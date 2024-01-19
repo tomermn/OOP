@@ -1,6 +1,8 @@
 public class RendererFactory {
 
-    public Renderer createRenderer(String rendererName, int size) {
+    public RendererFactory() {}
+
+    public Renderer buildRenderer(String rendererName, int size) {
         switch (rendererName) {
             case Constants.VOID_RENDERER_NAME:
                 return new VoidRenderer();

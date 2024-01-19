@@ -42,7 +42,7 @@ public class Board {
      * @return true if the mark was successfully placed, false otherwise.
      */
     public boolean putMark(Mark mark, int row, int col) {
-        if (!isValidCoordinates(row, col)) {
+        if (!isCoordinateOnBoard(row, col)) {
             return false;
         }
 
@@ -58,11 +58,12 @@ public class Board {
      * Retrieves the mark at the specified row and column.
      *
      * @param row The row index of the cell.
+     *
      * @param col The column index of the cell.
      * @return The mark at the specified coordinates, or {@code Mark.BLANK} if the coordinates are invalid.
      */
     public Mark getMark(int row, int col) {
-        if (isValidCoordinates(row, col)) {
+        if (isCoordinateOnBoard(row, col)) {
             return board[row][col];
         }
         return Mark.BLANK;
@@ -78,9 +79,7 @@ public class Board {
         }
     }
 
-    private boolean isValidCoordinates(int row, int col) {
-        boolean isRowValid = (row < boardSize) && (row >= 0);
-        boolean isColValid = (col < boardSize) && (col >= 0);
-        return isRowValid && isColValid;
+    private boolean isCoordinateOnBoard(int row, int col) {
+        return ((row < boardSize) && (row >= 0)) && ((col < boardSize) && (col >= 0));
     }
 }

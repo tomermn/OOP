@@ -5,6 +5,7 @@
  */
 public class HumanPlayer implements Player {
 
+    public HumanPlayer() {}
 
     /**
      * Plays a turn for the human player on the provided game board.
@@ -29,7 +30,7 @@ public class HumanPlayer implements Player {
     }
 
     private boolean hasPutMark(int row, int col, Board board, Mark mark) {
-        if (!isValidCoordinates(row, col, board.getSize())) {
+        if (!isValidCoordinate(row, col, board.getSize())) {
             System.out.println(Constants.INVALID_COORDINATE);
             return false;
 
@@ -41,7 +42,7 @@ public class HumanPlayer implements Player {
         return true;
     }
 
-    private boolean isValidCoordinates(int row, int col, int size) {
+    private boolean isValidCoordinate(int row, int col, int size) {
         boolean isRowValid = (row < size) && (row >= 0);
         boolean isColValid = (col < size) && (col >= 0);
         return isRowValid && isColValid;

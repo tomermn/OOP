@@ -1,9 +1,12 @@
 public class Constants {
-    public final static String UNKNOWN_PLAYER_NAME = "Choose a player, and start again.\nThe players: [human, clever, whatever, genius]";
+    public final static String UNKNOWN_PLAYER_NAME = "Choose a player, and start again." +
+            "\nThe players: [human, clever, whatever, genius]";
 
-    public final static String UNKNOWN_RENDERER_NAME = "Choose a renderer, and start again. \nPlease choose one of the following [console, none]";
+    public final static String UNKNOWN_RENDERER_NAME = "Choose a renderer, and start again. " +
+            "\nPlease choose one of the following [console, none]";
 
-    public final static String INVALID_COORDINATE = "Invalid mark position, please choose a different position.\n" +
+    public final static String INVALID_COORDINATE = "Invalid mark position," +
+            " please choose a different position.\n" +
             "Invalid coordinates, type again: ";
 
     public final static String OCCUPIED_COORDINATE = "Mark position is already occupied.\n" +
@@ -23,17 +26,9 @@ public class Constants {
     public final static String GENIUS_PLAYER_NAME = "genius";
     public final static String CONSOLE_RENDERER_NAME = "console";
     public final static String VOID_RENDERER_NAME = "none";
-    public final static int ROUNDS_ARG = 0;
-    public final static int SIZE_ARG = 1;
-    public final static int WIN_STREAK_ARG = 2;
-    public final static int RENDERER_ARG = 3;
-    public final static int PLAYER1_ARG = 4;
-    public final static int PLAYER2_ARG = 5;
 
 
-
-
-
+    public Constants() {}
 
     /**
      * Use this method to generate the text that HumanPlayer should send
@@ -46,3 +41,5 @@ public class Constants {
 
     }
 }
+
+

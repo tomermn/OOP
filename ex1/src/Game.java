@@ -107,7 +107,8 @@ public class Game {
     }
 
     private boolean checkWinConditions() {
-        return (checkRowStreak() || checkColStreak() || checkDiagonalLeftStreak() || checkDiagonalRightStreak());
+        return (checkRowStreak() || checkColStreak() ||
+                checkDiagonalLeftStreak() || checkDiagonalRightStreak());
     }
 
     private boolean checkRowStreak() {
@@ -184,5 +185,4 @@ public class Game {
     private boolean checkMark(int i, int j) {
         return (board.getMark(i, j) == currentMark);
     }
-
 }

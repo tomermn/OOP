@@ -1,4 +1,4 @@
-import java.util.Locale;
+
 
 /**
  * Represents a Tic Tac Toe tournament between two players.
@@ -14,20 +14,34 @@ public class Tournament {
     private int player2Points = 0;
     private int ties = 0;
 
-
-    /**
-     * Constructs a Tournament with the specified parameters.
-     *
-     * @param rounds   the number of rounds in the tournament
-     * @param renderer the renderer for displaying the game
-     * @param player1  the first Player instance
-     * @param player2  the second Player instance
-     */
     public Tournament(int rounds, Renderer renderer, Player player1, Player player2) {
         this.rounds = rounds;
         this.renderer = renderer;
         this.player1 = player1;
         this.player2 = player2;
+    }
+
+    public static void main(String[] args) {
+        if (!checkArgsValidation(args)) {
+            return;
+        }
+        int roundCount = Integer.parseInt(args[0]);
+        int size = Integer.parseInt(args[1]);
+        int winStreak = Integer.parseInt(args[2]);
+        String rendererName = args[3].toLowerCase();
+        String player1Name = args[4].toLowerCase();
+        String player2Name = args[5].toLowerCase();
+
+        PlayerFactory playerFactory = new PlayerFactory();
+        RendererFactory rendererFactory = new RendererFactory();
+        Player player1 = playerFactory.buildPlayer(player1Name);
+        Player player2 = playerFactory.buildPlayer(player2Name);
+        Renderer renderer = rendererFactory.buildRenderer(rendererName, size);
+
+        if (player1 != null && player2 != null && renderer != null) {
+            Tournament tournament = new Tournament(roundCount, renderer, player1, player2);
+            tournament.playTournament(size, winStreak, player1Name, player2Name);
+        }
     }
 
     /**
@@ -62,7 +76,6 @@ public class Tournament {
         }
         Mark gameResult = game.run();
         calculateResults(gameResult, round);
-
     }
 
     /**
@@ -89,6 +102,7 @@ public class Tournament {
             case BLANK:
                 ties++;
                 break;
+
             case X:
                 if (round % 2 == 0){
                     player1Points++;
@@ -96,6 +110,7 @@ public class Tournament {
                     player2Points++;
                 }
                 break;
+
             case O:
                 if (round % 2 == 0) {
                     player2Points++;
@@ -103,6 +118,7 @@ public class Tournament {
                     player1Points++;
                 }
                 break;
+
             default:
                 break;
         }
@@ -117,9 +133,8 @@ public class Tournament {
      * @return true if the arguments are valid, false otherwise
      */
     private static boolean checkArgsValidation (String[] args) {
-        return isRendererNameValid(args[Constants.RENDERER_ARG]) &&
-                isPlayerNameValid(args[Constants.PLAYER1_ARG]) &&
-                isPlayerNameValid(args[Constants.PLAYER2_ARG]);
+        return isRendererNameValid(args[3]) && isPlayerNameValid(args[4]) &&
+                isPlayerNameValid(args[5]);
     }
 
     /**
@@ -129,7 +144,8 @@ public class Tournament {
      * @return true if the renderer name is valid, false otherwise
      */
     private static boolean isRendererNameValid (String rendererName) {
-        if (!(rendererName.equalsIgnoreCase(Constants.CONSOLE_RENDERER_NAME) || rendererName.equalsIgnoreCase(Constants.VOID_RENDERER_NAME))) {
+        if (!(rendererName.equalsIgnoreCase(Constants.CONSOLE_RENDERER_NAME) ||
+                rendererName.equalsIgnoreCase(Constants.VOID_RENDERER_NAME))) {
             System.out.println(Constants.UNKNOWN_RENDERER_NAME);
             return false;
         }
@@ -144,34 +160,14 @@ public class Tournament {
      */
     private static boolean isPlayerNameValid(String playerName) {
 
-        if (!(playerName.equalsIgnoreCase(Constants.HUMAN_PLAYER_NAME) || playerName.equalsIgnoreCase(Constants.RANDOM_PLAYER_NAME) ||
-                playerName.equalsIgnoreCase(Constants.CLEVER_PLAYER_NAME) || playerName.equalsIgnoreCase(Constants.GENIUS_PLAYER_NAME))) {
+        if (!(playerName.equalsIgnoreCase(Constants.HUMAN_PLAYER_NAME) ||
+              playerName.equalsIgnoreCase(Constants.RANDOM_PLAYER_NAME) ||
+              playerName.equalsIgnoreCase(Constants.CLEVER_PLAYER_NAME) ||
+              playerName.equalsIgnoreCase(Constants.GENIUS_PLAYER_NAME))) {
             System.out.println(Constants.UNKNOWN_PLAYER_NAME);
             return false;
         }
         return true;
     }
 
-    public static void main(String[] args) {
-        if (!checkArgsValidation(args)) {
-            return;
-        }
-        int roundCount = Integer.parseInt(args[Constants.ROUNDS_ARG]);
-        int size = Integer.parseInt(args[Constants.SIZE_ARG]);
-        int winStreak = Integer.parseInt(args[Constants.WIN_STREAK_ARG]);
-        String rendererName = args[Constants.RENDERER_ARG].toLowerCase(Locale.ROOT);
-        String player1Name = args[Constants.PLAYER1_ARG].toLowerCase();
-        String player2Name = args[Constants.PLAYER2_ARG].toLowerCase();
-
-        PlayerFactory playerFactory = new PlayerFactory();
-        RendererFactory rendererFactory = new RendererFactory();
-        Player player1 = playerFactory.createPlayer(player1Name);
-        Player player2 = playerFactory.createPlayer(player2Name);
-        Renderer renderer = rendererFactory.createRenderer(rendererName, size);
-
-        if (player1 != null && player2 != null && renderer != null) {
-            Tournament tournament = new Tournament(roundCount, renderer, player1, player2);
-            tournament.playTournament(size, winStreak, player1Name, player2Name);
-        }
-    }
 }

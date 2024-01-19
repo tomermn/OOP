@@ -1,5 +1,6 @@
 public class GeniusPlayer implements Player {
 
+    public GeniusPlayer() {}
     @Override
     public void playTurn(Board board, Mark mark) {
         int boardSize = board.getSize();

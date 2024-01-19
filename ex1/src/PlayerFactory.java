@@ -2,7 +2,9 @@ import java.lang.invoke.CallSite;
 
 public class PlayerFactory {
 
-    public Player createPlayer(String playerName) {
+    public PlayerFactory() {}
+
+    public Player buildPlayer(String playerName) {
         switch (playerName) {
             case Constants.HUMAN_PLAYER_NAME:
                 return new HumanPlayer();

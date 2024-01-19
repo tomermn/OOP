@@ -6,6 +6,8 @@ import java.util.Random;
  */
 public class WhateverPlayer implements Player {
 
+    public WhateverPlayer() {}
+
     /**
      * Overrides the playTurn method from the Player interface to make a random move.
      * The player selects a random, unoccupied cell on the board and places its mark.
