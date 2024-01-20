@@ -1,0 +1,65 @@
+tomerm1
+314998808
+
+1. Question 1:
+For the "whatever" player, I implemented a strategy where it randomly selects a row and column
+and attempts to place its mark.
+If the chosen cell is already occupied, the player repeats the random selection process
+until it successfully places its mark.
+
+For the "clever" player, the strategy involves filling the first available cell,
+starting from the top-left corner and moving row by row. If the current cell is occupied,
+the player skips to the next cell in the same row. If the row is full,
+the player continues the pattern in the row below, from left to right.
+
+For the "genius" player, the strategy is to fill the first available cell,
+starting from the second column on the left, moving column by column, from top to bottom.
+If the current cell is occupied, the player skips to the next cell in the same column.
+If the column is full, the player continues the pattern in the column to the right,
+from top to bottom.
+
+
+In this way, genius will often outperform clever because genius blocks
+clever's sequence in the first row, while clever does not interfere with genius's streak.
+Additionally, both genius and clever have a higher chance of winning against whatever
+since the two former strategies aim to achieve a sequence quickly, even if not particularly
+strategically, while "whatever" makes arbitrary choices.
+
+
+2. Question 2
+The advantages of designing the software in a way that each of the player classes uses a common
+interface are that other classes can use implementations of the interface without being
+dependent on the internal implementation of the class that implements the interface,
+as long as it contains implementations for the methods guaranteed by the interface.
+
+This helps in several ways:
+
+a.  Simple and safe code extension - It is possible to add and use classes that implement the
+    interface without making adjustments in the using classes. Thus, among other benefits,
+    it adheres to the open-closed principle.
+
+b.  Programming to the interface and not to the implementation - Classes using the interface
+    distance themselves from the implementation details of the objects they use since they
+    operate on objects based on a generic contract rather than delving into specific
+    implementations. This simplifies the use of objects for the using classes,
+    ensures a simpler extension of the classes, and emphasizes encapsulation.
+
+
+Pillars –
+
+a.  Abstraction - Using the Player interface allows classes that use players to not delve into the
+    specific implementation details of each player type but rather to use the common interface of
+    the player and the methods it offers. Therefore, for classes using the interface,
+    the implementation details ("how") of different player classes do not matter,
+    only what a class implementing the interface is capable of doing ("what"),
+    and that is precisely the definition of simplification.
+
+b.  Polymorphism - Using the Player interface allows for the simple and safe addition of different
+    shapes of players, as long as they implement the methods in the interface.
+    In this way, the classes of the Tournament and the Game could use a large number of
+    player types without knowing about it, as they simply used the player's interface.
+    This way, by using the single interface, we achieved different behaviors.
+
+c.  Encapsulation - Using the interface allows the hiding of the implementation details
+    of the classes that implement the player interface and using different forms
+    of players without making adjustments to the using classes.
