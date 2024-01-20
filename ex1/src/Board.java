@@ -4,7 +4,6 @@
  * @author Tomer Meidan
  */
 public class Board {
-
     private int boardSize = Constants.DEFAULT_BOARD_SIZE;
     private Mark[][] board;
 
@@ -20,7 +19,7 @@ public class Board {
      *
      * @param size The size of the game board.
      */
-    public Board(int size){
+    public Board(int size) {
         boardSize = size;
         createBoard(size);
     }
@@ -33,7 +32,7 @@ public class Board {
     public int getSize() {return boardSize;}
 
     /**
-     * Places a mark on the specified row and column if the coordinates are valid
+     * Places a mark on the specified row and column if the coordinates are on the board
      * and the cell is empty.
      *
      * @param mark The mark to be placed on the board.
@@ -45,11 +44,9 @@ public class Board {
         if (!isCoordinateOnBoard(row, col)) {
             return false;
         }
-
         if (board[row][col] != Mark.BLANK) {
             return false;
         }
-
         board[row][col] = mark;
         return true;
     }
@@ -58,9 +55,9 @@ public class Board {
      * Retrieves the mark at the specified row and column.
      *
      * @param row The row index of the cell.
-     *
      * @param col The column index of the cell.
-     * @return The mark at the specified coordinates, or {@code Mark.BLANK} if the coordinates are invalid.
+     * @return The mark at the specified coordinates, or {@code Mark.BLANK} if the coordinates are
+     * not on the board.
      */
     public Mark getMark(int row, int col) {
         if (isCoordinateOnBoard(row, col)) {
@@ -69,7 +66,10 @@ public class Board {
         return Mark.BLANK;
     }
 
-    private void createBoard(int size){
+    /*
+     * initialize the game board with BLANK marks and specified size.
+     */
+    private void createBoard(int size) {
         board = new Mark[size][size];
 
         for (int row = 0; row < size; row++) {
@@ -79,6 +79,9 @@ public class Board {
         }
     }
 
+    /*
+     * Helper method to check if the coordinates are within the valid range of the board
+     */
     private boolean isCoordinateOnBoard(int row, int col) {
         return ((row < boardSize) && (row >= 0)) && ((col < boardSize) && (col >= 0));
     }

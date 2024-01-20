@@ -1,6 +1,14 @@
+
 /**
- * The `Game` class represents a Tic-Tac-Toe game between two players on a square game board.
- * It manages player turns, tracks game state, and checks for win conditions.
+ * The Game class represents a Tic-Tac-Toe game instance with two players, a game board, and a renderer.
+ * It manages the flow of the game, handles player turns, and checks for win conditions.
+ *
+ * <p>
+ * Players are assigned the marks 'X' and 'O', and the game board is rendered using the specified renderer.
+ * The game can be customized with different board sizes and win streak lengths.
+ * </p>
+ *
+ * @author Tomer Meidan
  */
 public class Game {
     private Player playerX;
@@ -8,18 +16,17 @@ public class Game {
     private Board board;
     private Renderer renderer;
     private int winStreak = Constants.DEFAULT_WIN_STREAK;
-    private boolean isGameOver = false;
     private Player currentPlayer;
     private Mark currentMark;
     private int turnCounter = 0;
 
 
     /**
-     * Constructs a new game with the given players and renderer.
+     * Constructs a new Game instance with the specified players and renderer using the default board size.
      *
-     * @param playerX   the first player (Mark X)
-     * @param playerO   the second player (Mark O)
-     * @param renderer  the renderer to display the game board
+     * @param playerX   The player assigned the mark 'X'.
+     * @param playerO   The player assigned the mark 'O'.
+     * @param renderer  The renderer used to display the game board.
      */
     public Game(Player playerX, Player playerO, Renderer renderer) {
         this.playerX = playerX;
@@ -29,29 +36,29 @@ public class Game {
     }
 
     /**
-     * Constructs a new game with the given players, renderer, and board size.
+     * Constructs a new Game instance with the specified players, renderer, custom board size, and win streak length.
      *
-     * @param playerX   the first player (Mark X)
-     * @param playerO   the second player (Mark O)
-     * @param size      the size of the square game board
-     * @param winStreak the number of consecutive marks required to win
-     * @param renderer  the renderer to display the game board
+     * @param playerX    The player assigned the mark 'X'.
+     * @param playerO    The player assigned the mark 'O'.
+     * @param size       The custom size of the game board.
+     * @param winStreak  The custom win streak length.
+     * @param renderer   The renderer used to display the game board.
      */
     public Game(Player playerX, Player playerO, int size, int winStreak,Renderer renderer) {
         this(playerX, playerO, renderer);
         board = new Board(size);
-        if (winStreak <= size && winStreak > 2) {
+
+        if (winStreak <= size && winStreak >= Constants.MIN_WIN_STREAK) {
             this.winStreak = winStreak;
-        }
-        else{
+        } else {
             this.winStreak = size;
         }
     }
 
     /**
-     * Gets the required win streak for winning the game.
+     * Gets the current win streak length for the game.
      *
-     * @return the win streak
+     * @return The win streak length.
      */
     public int getWinStreak() {
         return winStreak;
@@ -60,15 +67,16 @@ public class Game {
     /**
      * Gets the size of the game board.
      *
-     * @return the size of the game board
+     * @return The size of the game board.
      */
     public int getBoardSize() {
         return board.getSize();
     }
+
     /**
-     * Initiates and runs the game, returning the Mark of the victory streak of the game.
+     * Initiates the game and returns the mark of the winning player or 'BLANK' if it's a tie.
      *
-     * @return Mark of the victory streak
+     * @return The mark of the winning player or 'BLANK' if it's a tie.
      */
     public Mark run() {
         currentPlayer = playerX;
@@ -76,66 +84,75 @@ public class Game {
         return handleGame();
     }
 
+    /*
+     * Handles the flow of the game, player turns, and win conditions.
+     */
     private Mark handleGame() {
         Mark gameResult = Mark.BLANK;
         int boardSize = board.getSize();
         int cellsNumber = boardSize * boardSize;
+        boolean isGameOver = false;
+
         while (!isGameOver) {
             currentPlayerTurn();
-            if (checkWinConditions()){
+            if (checkWinConditions()){ // The player achieved a streak equals to the game winStreak
                 gameResult = currentMark;
                 isGameOver = true;
-            } else if (cellsNumber == turnCounter) {
+            } else if (cellsNumber == turnCounter) { // The board is full
                 isGameOver = true;
-            }
-            else {
+            } else {
                 setupNextTurn();
             }
         }
         return gameResult;
     }
 
+    /*
+     * Executes the current player's turn, updates the turn counter, and renders the board.
+     */
     private void currentPlayerTurn() {
         currentPlayer.playTurn(board, currentMark);
         turnCounter++;
         renderer.renderBoard(board);
     }
 
+    /*
+     * Sets up the next turn by switching players and marks.
+     */
     private void setupNextTurn() {
         currentPlayer = (currentPlayer == playerX) ? playerO : playerX;
         currentMark = (currentMark == Mark.X) ? Mark.O : Mark.X;
     }
 
+    /*
+     * Checks streaks for rows, columns, and diagonals.
+     */
     private boolean checkWinConditions() {
-        return (checkRowStreak() || checkColStreak() ||
-                checkDiagonalLeftStreak() || checkDiagonalRightStreak());
+        return (checkStreakByType(Constants.ROW) ||
+                checkStreakByType(Constants.COL) ||
+                checkStreakByType(Constants.DIAGONAL_LEFT) ||
+                checkStreakByType(Constants.DIAGONAL_RIGHT));
     }
 
-    private boolean checkRowStreak() {
-        return checkStraightStreak(Constants.ROW);
-    }
+    /*
+     * Checks win conditions for a specific streak type (row, column, diagonal (left = /, right = \)
+     */
+    private boolean checkStreakByType(String streakType) {
+        int boardSize = board.getSize();
 
-    private boolean checkColStreak() {
-        return checkStraightStreak(Constants.COL);
-    }
-
-    private boolean checkDiagonalLeftStreak() {
-        return checkDiagonalStreak(Constants.DIAGONAL_LEFT);
-    }
-
-    private boolean checkDiagonalRightStreak() {
-        return checkDiagonalStreak(Constants.DIAGONAL_RIGHT);
-    }
-
-    private boolean checkStraightStreak(String streakType) {
-        for (int i = 0; i < board.getSize(); i++) {
+        for (int i = 0; i < boardSize; i++) {
             int currentSequenceLength = 0;
-            for (int j = 0; j < board.getSize(); j++) {
-                if (checkStreakByType(streakType, i, j)) {
+            int bound = getBoundByType(streakType, i, boardSize); // Get bound for the inner loop.
+
+            // Calculate sequence of the player's mark.
+            // Start over if the sequence has been interrupted by different mark or blank cell.
+            for (int j = 0; j <= bound; j++) {
+                if (checkMarkByType(streakType, i, j)) {
                     currentSequenceLength++;
-                }else {
+                } else {
                     currentSequenceLength = 0;
                 }
+
                 if (currentSequenceLength == winStreak) {
                     return true;
                 }
@@ -144,26 +161,25 @@ public class Game {
         return false;
     }
 
-    private boolean checkDiagonalStreak(String streakType) {
-        for (int i = 0; i < board.getSize(); i++) {
-            int currentSequenceLength = 0;
-            for (int j = 0; j <= i; j++) {
-                if (checkStreakByType(streakType, i, j)) {
-                    currentSequenceLength++;
-                }
-                else{
-                    currentSequenceLength = 0;
-                }
-                if (currentSequenceLength == winStreak) {
-                    return true;
-                }
-            }
+    /*
+     * Helper method to the function checkStreakByType.
+     * in diagonal streak, the bound should be the index of the outer loop.
+     * in row or col streak, the bound should be the board size.
+     */
+    private int getBoundByType (String streakType, int i, int boardSize) {
+        if (streakType.equals(Constants.DIAGONAL_LEFT) ||
+                streakType.equals(Constants.DIAGONAL_RIGHT)) {
+            return i;
         }
-        return false;
+        return boardSize;
     }
 
-    private boolean checkStreakByType(String streakType, int i, int j) {
+    /*
+     * Checks the mark by a specific streak type and coordinate.
+     */
+    private boolean checkMarkByType(String streakType, int i, int j) {
         switch (streakType) {
+
             case Constants.ROW:
                 return checkMark(i, j);
 
@@ -178,10 +194,13 @@ public class Game {
 
             default:
                 break;
-        }
+            }
         return false;
     }
 
+    /*
+     * Checks the mark at the specified row and column.
+     */
     private boolean checkMark(int i, int j) {
         return (board.getMark(i, j) == currentMark);
     }
