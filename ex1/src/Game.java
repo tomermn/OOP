@@ -36,7 +36,8 @@ public class Game {
     }
 
     /**
-     * Constructs a new Game instance with the specified players, renderer, custom board size, and win streak length.
+     * Constructs a new Game instance with the specified players, renderer, custom board size,
+     * and win streak length.
      *
      * @param playerX    The player assigned the mark 'X'.
      * @param playerO    The player assigned the mark 'O'.
@@ -135,7 +136,7 @@ public class Game {
     }
 
     /*
-     * Checks win conditions for a specific streak type (row, column, diagonal (left = /, right = \)
+     * Checks win conditions for a specific streak type (row, column, diagonals)
      */
     private boolean checkStreakByType(String streakType) {
         int boardSize = board.getSize();
@@ -147,7 +148,7 @@ public class Game {
             // Calculate sequence of the player's mark.
             // Start over if the sequence has been interrupted by different mark or blank cell.
             for (int j = 0; j <= bound; j++) {
-                if (checkMarkByType(streakType, i, j)) {
+                if (checkCellByType(streakType, i, j)) {
                     currentSequenceLength++;
                 } else {
                     currentSequenceLength = 0;
@@ -175,9 +176,9 @@ public class Game {
     }
 
     /*
-     * Checks the mark by a specific streak type and coordinate.
+     * Checks the mark on a cell determined by a specific streak type.
      */
-    private boolean checkMarkByType(String streakType, int i, int j) {
+    private boolean checkCellByType(String streakType, int i, int j) {
         switch (streakType) {
 
             case Constants.ROW:

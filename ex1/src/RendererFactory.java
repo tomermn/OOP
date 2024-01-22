@@ -26,7 +26,7 @@ public class RendererFactory {
      * @return An instance of the corresponding renderer or null if the renderer type is not recognized.
      */
     public Renderer buildRenderer(String rendererType, int size) {
-        switch (rendererType) {
+        switch (rendererType.toLowerCase()) {
 
             case Constants.VOID_RENDERER_NAME:
                 return new VoidRenderer();

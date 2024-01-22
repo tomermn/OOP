@@ -2,6 +2,7 @@ tomerm1
 314998808
 
 1. Question 1:
+
 For the "whatever" player, I implemented a strategy where it randomly selects a row and column
 and attempts to place its mark.
 If the chosen cell is already occupied, the player repeats the random selection process
@@ -27,32 +28,26 @@ strategically, while "whatever" makes arbitrary choices.
 
 
 2. Question 2
-The advantages of designing the software in a way that each of the player classes uses a common
-interface are that other classes can use implementations of the interface without being
-dependent on the internal implementation of the class that implements the interface,
-as long as it contains implementations for the methods guaranteed by the interface.
 
-This helps in several ways:
+The advantages of designing software with a common interface for player classes lie in the ability
+of other classes to utilize interface implementations without being tied to the internal details of
+the implementing class. This decoupling allows for simple and safe code extension, enabling the addition
+and use of classes implementing the interface without requiring adjustments in the utilizing classes.
+This adherence to the open-closed principle emphasizes the ease of extending functionality without
+modifying existing code.
 
-a.  Simple and safe code extension - It is possible to add and use classes that implement the
-    interface without making adjustments in the using classes. Thus, among other benefits,
-    it adheres to the open-closed principle.
-
-b.  Programming to the interface and not to the implementation - Classes using the interface
-    distance themselves from the implementation details of the objects they use since they
-    operate on objects based on a generic contract rather than delving into specific
-    implementations. This simplifies the use of objects for the using classes,
-    ensures a simpler extension of the classes, and emphasizes encapsulation.
+This practice promotes abstraction in object utilization, ensures a straightforward extension of classes,
+and underscores the importance of encapsulation. Additionally, The software's ability to use different
+instances through the common interface expresses polymorphism.
 
 
-Pillars –
-
+In this project, the OOP Pillars are expressed as follows:
 a.  Abstraction - Using the Player interface allows classes that use players to not delve into the
     specific implementation details of each player type but rather to use the common interface of
     the player and the methods it offers. Therefore, for classes using the interface,
-    the implementation details ("how") of different player classes do not matter,
-    only what a class implementing the interface is capable of doing ("what"),
-    and that is precisely the definition of simplification.
+    the implementation details of different player classes (the "how") do not matter,
+    only what a class implementing the interface is capable of doing (the "what"),
+    and that is precisely the definition of Abstraction.
 
 b.  Polymorphism - Using the Player interface allows for the simple and safe addition of different
     shapes of players, as long as they implement the methods in the interface.

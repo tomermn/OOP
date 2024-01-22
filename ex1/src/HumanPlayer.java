@@ -1,6 +1,7 @@
 /**
  * The HumanPlayer class represents a player controlled by a human in the Tic-Tac-Toe game.
- * It implements the Player interface and provides functionality for a human player to make moves on the game board.
+ * It implements the Player interface and provides functionality for a human player to make moves
+ * on the game board.
  *
  * @author Tomer Meidan
  */
